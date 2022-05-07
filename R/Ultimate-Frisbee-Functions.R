@@ -66,8 +66,8 @@ RatingAdjustedGameScoreCalculator = function(winner_rating,loser_rating,winner_s
 
 RatingAdjustedGameScoreCalculatorTeam = function(winner_team,loser_team,winner_score,loser_score,input_data = suppressWarnings(GetFrisbeeRankings())) {
 
-  winner_rating = pull(input_data[input_data$Team == winner_team,"Rating"])
-  loser_rating = pull(input_data[input_data$Team == loser_team,"Rating"])
+  winner_rating = dplyr::pull(input_data[input_data$Team == winner_team,"Rating"])
+  loser_rating = dplyr::pull(input_data[input_data$Team == loser_team,"Rating"])
 
   gamescore = GameScoreCalculator(winner_score = winner_score, loser_score = loser_score)
 

@@ -1,7 +1,22 @@
+---
+title: "Documentation"
+author: Ben Wieland
+date: Sys.Date()
+output: md_document
+---
+
 # fRisbee: For college ultimate frisbee
 
 fRisbee is an R package designed to make interfacting with college frisbee team rankings straightforward & easy. 
 
+Install the package using the install github function.
+
+```{r results = F, message = F, warning = F}
+devtools::install_github("https://github.com/bbwieland/fRisbee",upgrade = "ask",force = T)
+library(fRisbee)
+```
+
+
 ``` {r}
-GetTeamRankings()
+head(fRisbee::GetFrisbeeRankings())
 ```

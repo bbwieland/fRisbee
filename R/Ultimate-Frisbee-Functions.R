@@ -3,7 +3,7 @@
 #' This function returns up-to-date ultimate frisbee rankings from frisbee-rankings.com
 #' @param DivisionIOnly Returns just D-I rankings if TRUE. Defaults to FALSE.
 #' @param SimpleTable Returns just a table with team info & rating if TRUE. Defaults to FALSE.
-#' @keywords cats
+#' @keywords
 #' @export
 #' @examples
 #' GetFrisbeeRankings()
@@ -12,7 +12,7 @@ GetFrisbeeRankings = function(DivisionIOnly = F,SimpleTable = F){
 
   site = rvest::read_html("https://www.frisbee-rankings.com/usau/college/men")
   data = (site %>% rvest::html_table())[[1]][,-c(2,6)] %>%
-    dplyr::mutate(Ranked = ifelse(is.na(as.numeric(substr(Team,nchar(Team)-1,nchar(Team)))), F, T)) %>%
+    dplyr::mutate(Ranked = ifelse(is.na(as.numeric(substr(Team,nchar(Team)-1,nchar(Team))), F, T))) %>%
     dplyr::mutate(RegionRank = ifelse(Ranked,substr(Team,nchar(Team) - 3, nchar(Team)),NA)) %>%
     dplyr::mutate(Team = ifelse(Ranked,substr(Team,1, nchar(Team) - 5),Team)) %>%
     dplyr::mutate(Rank = as.numeric(Rank))
@@ -41,6 +41,17 @@ GetFrisbeeRankings = function(DivisionIOnly = F,SimpleTable = F){
 
 }
 
+#' Calculate game score from a game result
+#'
+#' This function calculates game score using the USA Ultimate Rankings Algorithm.
+#' It returns the game score for the winning team.
+#' @param winner_score The score of the winning team.
+#' @param loser_score The score of the losing team.
+#' @keywords
+#' @export
+#' @examples
+#' GameScoreCalculator(13,12)
+#' GameScoreCalculator(13,6)
 
 GameScoreCalculator = function(winner_score,loser_score) {
   r = loser_score/(winner_score - 1)
@@ -48,6 +59,20 @@ GameScoreCalculator = function(winner_score,loser_score) {
   score = 125 + 475*(sin(min(1,(1 - r)/0.5)*0.4*pi)/sin(0.4*pi))
   return(score)
 }
+
+#' Calculate team rating change from a game result
+#'
+#' This function calculates game score using the USA Ultimate Rankings Algorithm.
+#' Then, it determines the ratings changes as a result of that game outcome.
+#' Returns a dataframe with information.
+#' @param winner_rating The rating of the winning team.
+#' @param loser_rating The rating of the losing team.
+#' @param winner_score The score of the winning team.
+#' @param loser_score The score of the losing team.
+#' @keywords
+#' @export
+#' @examples
+#' RatingAdjustedGameScoreCalculator(1500,1500,13,6)
 
 RatingAdjustedGameScoreCalculator = function(winner_rating,loser_rating,winner_score,loser_score) {
 
@@ -64,6 +89,22 @@ RatingAdjustedGameScoreCalculator = function(winner_rating,loser_rating,winner_s
 
   print(output)
 }
+
+#' Calculate team rating change from a game result
+#'
+#' This function calculates game score using the USA Ultimate Rankings Algorithm.
+#' Then, it determines the ratings changes as a result of that game outcome.
+#' Unlike its counterpart, RatingAdjustedGameScoreCalculator, it takes team names — not ratings — as inputs.
+#' Then, it pulls that team's most updated rating from the rankings site and calculates the results.
+#' Returns a dataframe with information.
+#' @param winner_team The name of the winning team.
+#' @param loser_team The name of the losing team.
+#' @param winner_score The score of the winning team.
+#' @param loser_score The score of the losing team.
+#' @keywords
+#' @export
+#' @examples
+#' RatingAdjustedGameScoreCalculatorTeam("Virginia","Virginia Tech",13,6)
 
 RatingAdjustedGameScoreCalculatorTeam = function(winner_team,loser_team,winner_score,loser_score,input_data = suppressWarnings(GetFrisbeeRankings())) {
 

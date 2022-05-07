@@ -17,4 +17,3 @@ This function returns up-to-date ultimate frisbee rankings from frisbee-rankings
 \examples{
 GetFrisbeeRankings()
 }
-\keyword{cats}

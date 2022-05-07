@@ -6,7 +6,7 @@
 #' @keywords cats
 #' @export
 #' @examples
-#' cat_function()
+#' GetFrisbeeRankings()
 
 GetFrisbeeRankings = function(DivisionIOnly = F,SimpleTable = F){
 
@@ -40,6 +40,7 @@ GetFrisbeeRankings = function(DivisionIOnly = F,SimpleTable = F){
   return(data)
 
 }
+
 
 GameScoreCalculator = function(winner_score,loser_score) {
   r = loser_score/(winner_score - 1)

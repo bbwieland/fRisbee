@@ -1,3 +1,13 @@
+#' Get updated college men's frisbee rankings
+#'
+#' This function returns up-to-date ultimate frisbee rankings from frisbee-rankings.com
+#' @param DivisionIOnly Returns just D-I rankings if TRUE. Defaults to FALSE.
+#' @param SimpleTable Returns just a table with team info & rating if TRUE. Defaults to FALSE.
+#' @keywords cats
+#' @export
+#' @examples
+#' cat_function()
+
 GetFrisbeeRankings = function(DivisionIOnly = F,SimpleTable = F){
 
   site = rvest::read_html("https://www.frisbee-rankings.com/usau/college/men")
@@ -74,5 +84,3 @@ RatingAdjustedGameScoreCalculatorTeam = function(winner_team,loser_team,winner_s
   print(output)
 }
 
-RatingAdjustedGameScoreCalculatorTeam("Virginia","Georgetown",13,11)
-RatingAdjustedGameScoreCalculatorTeam("North Carolina State","Virginia",12,8)

@@ -66,11 +66,16 @@ The ratings change produced by a specific game is a function of game
 score AND the opponent’s rating coming into a game. Basically, if your
 team’s game score exceeds the difference between your team’s rating and
 your opponent’s rating, your rating will INCREASE as a result;
-otherwise, it’ll DECREASE! Yes — this means that wins don’t always
-result in ratings increases! You need to beat a team by **more** than
-your “expected” win to see a ratings increase; the inverse is also true:
-a weaker team that holds its own against a strong team may see a ratings
-increase.
+otherwise, it’ll DECREASE!
+
+Yes — this means that wins don’t always result in ratings increases! You
+need to beat a team by **more** than your “expected” win to see a
+ratings increase; the inverse is also true: a weaker team that holds its
+own against a strong team may see a ratings increase.
+
+Use the RatingAdjustedGameScoreCalculator to determine how, given each
+team’s initial rating and each team’s game performance, their final
+rating will be affected by the outcome.
 
     # In an evenly matched game, a close victory results in a ratings increase.
     fRisbee::RatingAdjustedGameScoreCalculator(winner_rating = 1500,loser_rating = 1500,winner_score = 13, loser_score = 12)
@@ -85,3 +90,18 @@ increase.
     ##     Team Initial GameScore Difference Increased
     ## 1 winner    1500      1125       -375     FALSE
     ## 2  loser    1000      1375        375      TRUE
+
+We can combine two functions, GetFrisbeeRankings and
+RatingAdjustedGameScoreCalculator, to create a useful composite
+function: RatingAdjustedGameScoreCalculatorTeam.
+
+This works similary to RatingAdjustedGameScoreCalculator, but it takes
+team names as inputs instead of ratings. The function automatically
+pulls the most recent ratings for those teams, and calculates the game
+score change accordingly.
+
+    fRisbee::RatingAdjustedGameScoreCalculatorTeam(winner_team = "Virginia",loser_team = "Virginia Tech",winner_score = 13, loser_score = 8)
+
+    ##            Name   Team Initial GameScore Difference Increased
+    ## 1      Virginia winner 1593.82   1894.90   301.0796      TRUE
+    ## 2 Virginia Tech  loser 1398.74   1097.66  -301.0796     FALSE

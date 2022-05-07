@@ -15,6 +15,6 @@ GetFrisbeeRankings(DivisionIOnly = F, SimpleTable = F)
 This function returns up-to-date ultimate frisbee rankings from frisbee-rankings.com
 }
 \examples{
-cat_function()
+GetFrisbeeRankings()
 }
 \keyword{cats}

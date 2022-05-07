@@ -10,7 +10,6 @@ License: What license is it under?
 Encoding: UTF-8
 LazyData: true
 Imports:
-    dplyr,
-    rvest,
-    magrittr
+    tidyverse,
+    rvest
 RoxygenNote: 7.1.2.9000

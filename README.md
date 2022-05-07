@@ -24,6 +24,39 @@ www.frisbee-rankings.com
     ## 6     6 NW 2       Washin… 11-0    1      2027. North… Cascadia … D-I      1634.
     ## # … with 1 more variable: PDC <dbl>
 
+Using this data, lots of interesting analysis can be performed — for
+example, this scatterplot of D-I strength of schedule vs. team rating:
+
+(Note: you’ll need to install the ggrepel package to replicate this!)
+
+    library(ggrepel)
+
+    data = fRisbee::GetFrisbeeRankings(DivisionIOnly = T) %>%
+      filter(Rating >= 0)
+
+    ## Warning in ifelse(is.na(as.numeric(substr(Team, nchar(Team) - 1,
+    ## nchar(Team)))), : NAs introduced by coercion
+
+    ## Warning in mask$eval_all_mutate(quo): NAs introduced by coercion
+
+    ggplot(data,aes(x = SoS,y = Rating,label = Team)) +
+      geom_point() +
+      geom_smooth(method = "lm", se = F,linetype = "dashed") +
+      geom_text_repel(max.overlaps = 8) +
+      annotate("label",x = 750, y = 2000, label = "Overperform vs. schedule",size = 4) +
+      annotate("label",x = 1500, y = 500, label = "Underperform vs. schedule",size = 4) +
+      theme_classic() +
+      labs(title = "How does each team perform, relative to its strength of schedule?",
+           x = "Strength of schedule (average opp. rating)",
+           y = "Team rating")
+
+    ## `geom_smooth()` using formula 'y ~ x'
+
+    ## Warning: ggrepel: 171 unlabeled data points (too many overlaps). Consider
+    ## increasing max.overlaps
+
+![](README_files/figure-markdown_strict/unnamed-chunk-3-1.png)
+
 The USA Ultimate Frisbee website specifices an algorithm for determining
 score for each game, developed such that the minimum gain in score for
 any team is 125 points (after a one-goal win) and the maximum gain in
@@ -60,7 +93,7 @@ score for any given winner and loser scores.
            y = "Game Score",
            title = "Game score performance of a team that wins with 13 points")
 
-![](README_files/figure-markdown_strict/unnamed-chunk-3-1.png)
+![](README_files/figure-markdown_strict/unnamed-chunk-4-1.png)
 
 The ratings change produced by a specific game is a function of game
 score AND the opponent’s rating coming into a game. Basically, if your
@@ -105,3 +138,5 @@ score change accordingly.
     ##            Name   Team Initial GameScore Difference Increased
     ## 1      Virginia winner 1593.82   1894.90   301.0796      TRUE
     ## 2 Virginia Tech  loser 1398.74   1097.66  -301.0796     FALSE
+
+All data in this vignette as of May 7, 2022.

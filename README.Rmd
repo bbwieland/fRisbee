@@ -22,6 +22,29 @@ We can load the most up-to-date college rankings from www.frisbee-rankings.com
 head(fRisbee::GetFrisbeeRankings())
 ```
 
+Using this data, lots of interesting analysis can be performed — for example, this scatterplot of D-I strength of schedule vs. team rating: 
+
+(Note: you'll need to install the ggrepel package to replicate this!)
+
+```{r}
+library(ggrepel)
+
+data = fRisbee::GetFrisbeeRankings(DivisionIOnly = T) %>%
+  filter(Rating >= 0)
+
+ggplot(data,aes(x = SoS,y = Rating,label = Team)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = F,linetype = "dashed") +
+  geom_text_repel(max.overlaps = 8) +
+  annotate("label",x = 750, y = 2000, label = "Overperform vs. schedule",size = 4) +
+  annotate("label",x = 1500, y = 500, label = "Underperform vs. schedule",size = 4) +
+  theme_classic() +
+  labs(title = "How does each team perform, relative to its strength of schedule?",
+       x = "Strength of schedule (average opp. rating)",
+       y = "Team rating")
+```
+
+
 The USA Ultimate Frisbee website specifices an algorithm for determining score for each game, developed such that the minimum gain in score for any team is 125 points (after a one-goal win) and the maximum gain in score for any team is 600 points (if they more than double their opponent's score). The GameScoreCalculator function computes the game score for any given winner and loser scores. 
 
 ```{r}
@@ -76,3 +99,4 @@ This works similary to RatingAdjustedGameScoreCalculator, but it takes team name
 fRisbee::RatingAdjustedGameScoreCalculatorTeam(winner_team = "Virginia",loser_team = "Virginia Tech",winner_score = 13, loser_score = 8)
 ```
 
+All data in this vignette as of May 7, 2022. 

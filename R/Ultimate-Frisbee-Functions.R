@@ -12,7 +12,7 @@ GetFrisbeeRankings = function(DivisionIOnly = F,SimpleTable = F){
 
   site = rvest::read_html("https://www.frisbee-rankings.com/usau/college/men")
   data = (site %>% rvest::html_table())[[1]][,-c(2,6)] %>%
-    dplyr::mutate(Ranked = ifelse(is.na(as.numeric(substr(Team,nchar(Team)-1,nchar(Team))), F, T))) %>%
+    dplyr::mutate(Ranked = ifelse(is.na(as.numeric(substr(Team,nchar(Team)-1,nchar(Team)))), F, T)) %>%
     dplyr::mutate(RegionRank = ifelse(Ranked,substr(Team,nchar(Team) - 3, nchar(Team)),NA)) %>%
     dplyr::mutate(Team = ifelse(Ranked,substr(Team,1, nchar(Team) - 5),Team)) %>%
     dplyr::mutate(Rank = as.numeric(Rank))

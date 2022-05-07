@@ -9,9 +9,7 @@ Description: More about what it does (maybe more than one line)
 License: What license is it under?
 Encoding: UTF-8
 LazyData: true
-Imports:
-    dplyr,
-    rvest
 Depends:
-    magrittr
+    tidyverse,
+    rvest
 RoxygenNote: 7.1.2.9000

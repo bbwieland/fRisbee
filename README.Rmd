@@ -9,7 +9,7 @@ output: md_document
 
 fRisbee is an R package designed to make interfacting with college frisbee team rankings straightforward & easy. 
 
-Install the package using the install github function.
+Install the package using the code below.
 
 ```{r results = F, message = F, warning = F}
 devtools::install_github("https://github.com/bbwieland/fRisbee",upgrade = "ask",force = T)
@@ -21,3 +21,34 @@ We can load the most up-to-date college rankings from www.frisbee-rankings.com
 ``` {r warning = F}
 head(fRisbee::GetFrisbeeRankings())
 ```
+
+The USA Ultimate Frisbee website specifices an algorithm for determining score for each game, developed such that the minimum gain in score for any team is 125 points (after a one-goal win) and the maximum gain in score for any team is 600 points (if they more than double their opponent's score). The GameScoreCalculator function computes the game score for any given winner and loser scores. 
+
+```{r}
+# A close one-goal victory results in the minimum rating change of 125 points.
+fRisbee::GameScoreCalculator(13,12)
+
+# A blowout results in the maximum rating change of 600 points.
+fRisbee::GameScoreCalculator(13,3)
+
+# Let's look at how each possible outcome affects game score. 
+# The x-axis displays potential opponent scores in a game won with 13 points.
+
+seq = 12:1
+
+scores = seq %>%
+  map(~GameScoreCalculator(winner_score = 13, loser_score = .x)) %>%
+  unlist()
+
+plot_data = data.frame(opp_points = seq, score = scores)
+
+ggplot(plot_data,aes(opp_points,score)) +
+  scale_x_continuous(limits = c(0,12),breaks = seq(1,12,1)) +
+  geom_line() +
+  theme_classic() +
+  labs(x = "Opponent Points Scored",
+       y = "Game Score",
+       title = "Game score performance of a team that wins with 13 points")
+
+```
+

@@ -61,3 +61,27 @@ score for any given winner and loser scores.
            title = "Game score performance of a team that wins with 13 points")
 
 ![](README_files/figure-markdown_strict/unnamed-chunk-3-1.png)
+
+The ratings change produced by a specific game is a function of game
+score AND the opponent’s rating coming into a game. Basically, if your
+team’s game score exceeds the difference between your team’s rating and
+your opponent’s rating, your rating will INCREASE as a result;
+otherwise, it’ll DECREASE! Yes — this means that wins don’t always
+result in ratings increases! You need to beat a team by **more** than
+your “expected” win to see a ratings increase; the inverse is also true:
+a weaker team that holds its own against a strong team may see a ratings
+increase.
+
+    # In an evenly matched game, a close victory results in a ratings increase.
+    fRisbee::RatingAdjustedGameScoreCalculator(winner_rating = 1500,loser_rating = 1500,winner_score = 13, loser_score = 12)
+
+    ##     Team Initial GameScore Difference Increased
+    ## 1 winner    1500      1625        125      TRUE
+    ## 2  loser    1500      1375       -125     FALSE
+
+    # However, a highly-favored team winning a close game actually results in a ratings increase for the LOSING team.
+    fRisbee::RatingAdjustedGameScoreCalculator(winner_rating = 1500,loser_rating = 1000,winner_score = 13, loser_score = 12)
+
+    ##     Team Initial GameScore Difference Increased
+    ## 1 winner    1500      1125       -375     FALSE
+    ## 2  loser    1000      1375        375      TRUE

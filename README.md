@@ -8,12 +8,10 @@ Install the package using the install github function.
     devtools::install_github("https://github.com/bbwieland/fRisbee",upgrade = "ask",force = T)
     library(fRisbee)
 
+We can load the most up-to-date college rankings from
+www.frisbee-rankings.com
+
     head(fRisbee::GetFrisbeeRankings())
-
-    ## Warning in ifelse(is.na(as.numeric(substr(Team, nchar(Team) - 1,
-    ## nchar(Team)))), : NAs introduced by coercion
-
-    ## Warning in mask$eval_all_mutate(quo): NAs introduced by coercion
 
     ## # A tibble: 6 × 11
     ##    Rank RegionRank Team    Record WinPct Rating Region Conference Division   SoS

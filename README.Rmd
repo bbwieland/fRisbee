@@ -16,7 +16,8 @@ devtools::install_github("https://github.com/bbwieland/fRisbee",upgrade = "ask",
 library(fRisbee)
 ```
 
+We can load the most up-to-date college rankings from www.frisbee-rankings.com 
 
-``` {r}
+``` {r warning = F}
 head(fRisbee::GetFrisbeeRankings())
 ```

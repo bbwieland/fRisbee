@@ -3,7 +3,7 @@
 INTRODUCTORY VIGNETTE:
 
 fRisbee is an R package designed to make interfacting with college
-frisbee team rankings straightforward & easy.
+frisbee team rankings from frisbee-rankings.com straightforward & easy.
 
 Install the package using the code below.
 

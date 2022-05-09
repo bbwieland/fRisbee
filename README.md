@@ -142,3 +142,4 @@ score change accordingly.
     ## 2 Virginia Tech  loser 1398.74   1097.66  -301.0796     FALSE
 
 All data in this vignette as of May 7, 2022.
+Data sourced from frisbee-rankings.com — thanks to Cody Mills for developing the rankings site!

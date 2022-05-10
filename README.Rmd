@@ -59,11 +59,11 @@ virginia %>%
 
 # How did Virginia's performance vary by opponent? 
 
-ggplot(virginia,aes(x = OpponentRating, y = PtDiff)) +
+ggplot(virginia %>% filter(Status == "Counts"),aes(x = OpponentRating, y = PtDiff,label = Opponent)) +
   geom_point() + 
-  scale_x_continuous(limits = c(500,2500)) +
   geom_smooth(method = "lm",se = F) +
   geom_hline(yintercept = 0,color = "red", linetype = "dashed") +
+  geom_text_repel(max.overlaps = Inf) +
   theme_classic() +
   labs(title = "Virginia team performance by opponent strength",
        subtitle = "As expected, point differential decreases against stronger opponents.",

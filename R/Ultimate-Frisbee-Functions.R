@@ -186,7 +186,8 @@ GetTeamResults = function(team) {
                   GameScore = ifelse(Win == 1, GameScore,-GameScore)) %>%
     dplyr::mutate(GameValue = GameScore + OpponentRating) %>%
     dplyr::mutate(GameValueUsed = ifelse(Status == "Counts",GameValue,0),
-                  RatingsImpact = GameValue*PctOfRanking)
+                  RatingsImpact = GameValue*PctOfRanking) %>%
+    dplyr::mutate(Team = team)
 
   team.data.clean
 }

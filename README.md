@@ -1,13 +1,11 @@
 # fRisbee: For college ultimate frisbee
 
-INTRODUCTORY VIGNETTE:
-
 fRisbee is an R package designed to make interfacting with college
-frisbee team rankings from frisbee-rankings.com straightforward & easy.
+frisbee team rankings straightforward & easy.
 
 Install the package using the code below.
 
-    devtools::install_github("https://github.com/bbwieland/fRisbee",upgrade = "ask",force = T)
+    devtools::install_github("https://github.com/bbwieland/fRisbee",upgrade = "ask",force = F)
     library(fRisbee)
 
 We can load the most up-to-date college rankings from
@@ -18,12 +16,12 @@ www.frisbee-rankings.com
     ## # A tibble: 6 × 11
     ##    Rank RegionRank Team    Record WinPct Rating Region Conference Division   SoS
     ##   <dbl> <chr>      <chr>   <chr>   <dbl>  <dbl> <fct>  <chr>      <fct>    <dbl>
-    ## 1     1 NE 1       Brown   27-1    0.964  2224. New E… Greater N… D-I      1843.
-    ## 2     2 AC 1       North … 30-3    0.909  2173. Atlan… Carolina … D-I      1789.
-    ## 3     3 SC 1       Colora… 25-1    0.962  2138. South… Rocky Mou… D-I      1725.
-    ## 4     4 NW 1       Brigha… 22-1    0.957  2064. North… Big Sky DI D-I      1582.
-    ## 5     5 NE 2       Massac… 18-2    0.9    2053. New E… Greater N… D-I      1753.
-    ## 6     6 NW 2       Washin… 11-0    1      2027. North… Cascadia … D-I      1634.
+    ## 1     1 NE 1       Brown   32-1    0.970  2233. "New … "Greater … D-I      1834.
+    ## 2     2 AC 1       North … 36-3    0.923  2148. "Atla… "Carolina… D-I      1731.
+    ## 3     3 <NA>       Univer… 25-1    0.962  2112. ""     ""         ?        1699.
+    ## 4     4 NW 1       Brigha… 22-1    0.957  2059. "Nort… "Big Sky … D-I      1577.
+    ## 5     5 OV 1       Pittsb… 21-7    0.75   2024. "Ohio… "West Pen… D-I      1780.
+    ## 6     6 NE 2       Vermont 23-7    0.767  1998. "New … "Greater … D-I      1818.
     ## # … with 1 more variable: PDC <dbl>
 
 Using this data, lots of interesting analysis can be performed — for
@@ -54,10 +52,61 @@ example, this scatterplot of D-I strength of schedule vs. team rating:
 
     ## `geom_smooth()` using formula 'y ~ x'
 
-    ## Warning: ggrepel: 171 unlabeled data points (too many overlaps). Consider
+    ## Warning: ggrepel: 172 unlabeled data points (too many overlaps). Consider
     ## increasing max.overlaps
 
 ![](README_files/figure-markdown_strict/unnamed-chunk-3-1.png)
+
+Using fRisbee, it is also possible to scrape all of a team’s games
+played in the season.
+
+    ## scraping all Virginia games for the season
+
+    virginia = fRisbee::GetTeamResults("Virginia")
+
+    # Who were Virginia's ten toughest opponents this season, and how did they perform against them? 
+
+    virginia %>% 
+      dplyr::arrange(OppRk) %>% 
+      head(.,10)
+
+    ## # A tibble: 10 × 18
+    ##    OppRk Opponent Result Effect Status PctOfRanking Date       Event   Win   Pts
+    ##    <int> <chr>    <chr>   <dbl> <fct>         <dbl> <date>     <chr> <dbl> <dbl>
+    ##  1     2 North C… Loss …  -0.68 Counts       0.0479 2022-05-07 Atla…     0     2
+    ##  2    11 North C… Loss …  -5.28 Counts       0.0479 2022-05-07 Atla…     0     8
+    ##  3    12 Michigan Loss …  -6.62 Counts       0.023  2022-02-12 Quee…     0     5
+    ##  4    22 Duke     Loss …  -4.74 Counts       0.0269 2022-02-27 East…     0    11
+    ##  5    23 William… Loss …  -8.69 Counts       0.0269 2022-02-26 East…     0    10
+    ##  6    23 William… Loss …  -4    Counts       0.0427 2022-04-24 Virg…     0    11
+    ##  7    24 Maryland Loss …  -2.54 Counts       0.0239 2022-02-13 Quee…     0    10
+    ##  8    24 Maryland Loss … -16.0  Counts       0.0479 2022-05-08 Atla…     0    10
+    ##  9    28 North C… Win 1…  12.7  Counts       0.0233 2022-02-12 Quee…     1    11
+    ## 10    37 North C… Loss … -14.0  Counts       0.0239 2022-02-13 Quee…     0     8
+    ## # … with 8 more variables: OppPts <dbl>, GameScore <dbl>, PtDiff <dbl>,
+    ## #   OpponentRating <dbl>, TeamRatingPostgame <dbl>, GameValue <dbl>,
+    ## #   GameValueUsed <dbl>, RatingsImpact <dbl>
+
+    # How did Virginia's performance vary by opponent? 
+
+    ggplot(virginia,aes(x = OpponentRating, y = PtDiff)) +
+      geom_point() + 
+      scale_x_continuous(limits = c(500,2500)) +
+      geom_smooth(method = "lm",se = F) +
+      geom_hline(yintercept = 0,color = "red", linetype = "dashed") +
+      theme_classic() +
+      labs(title = "Virginia team performance by opponent strength",
+           subtitle = "As expected, point differential decreases against stronger opponents.",
+           x = "Opponent rating at time of game",
+           y = "Point differential")
+
+    ## `geom_smooth()` using formula 'y ~ x'
+
+    ## Warning: Removed 1 rows containing non-finite values (stat_smooth).
+
+    ## Warning: Removed 1 rows containing missing values (geom_point).
+
+![](README_files/figure-markdown_strict/unnamed-chunk-4-1.png)
 
 The USA Ultimate Frisbee website specifices an algorithm for determining
 score for each game, developed such that the minimum gain in score for
@@ -95,7 +144,7 @@ score for any given winner and loser scores.
            y = "Game Score",
            title = "Game score performance of a team that wins with 13 points")
 
-![](README_files/figure-markdown_strict/unnamed-chunk-4-1.png)
+![](README_files/figure-markdown_strict/unnamed-chunk-5-1.png)
 
 The ratings change produced by a specific game is a function of game
 score AND the opponent’s rating coming into a game. Basically, if your
@@ -138,8 +187,9 @@ score change accordingly.
     fRisbee::RatingAdjustedGameScoreCalculatorTeam(winner_team = "Virginia",loser_team = "Virginia Tech",winner_score = 13, loser_score = 8)
 
     ##            Name   Team Initial GameScore Difference Increased
-    ## 1      Virginia winner 1593.82   1894.90   301.0796      TRUE
-    ## 2 Virginia Tech  loser 1398.74   1097.66  -301.0796     FALSE
+    ## 1      Virginia winner 1561.41   1859.34   297.9296      TRUE
+    ## 2 Virginia Tech  loser 1363.18   1065.25  -297.9296     FALSE
 
-All data in this vignette as of May 7, 2022.
-Data sourced from frisbee-rankings.com — thanks to Cody Mills for developing the rankings site!
+All data in this vignette as of May 7, 2022. Data sourced from
+frisbee-rankings.com — thanks to Cody Mills for developing the rankings
+site!

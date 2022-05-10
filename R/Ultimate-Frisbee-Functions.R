@@ -165,6 +165,7 @@ GetTeamResults = function(team) {
   team.data.clean = team.data %>%
     dplyr::rename(OppRk = `#`,PctOfRanking = `% of Ranking`) %>%
     dplyr::select(OppRk, Opponent, Result, Effect, Status, PctOfRanking, Date, Event) %>%
+    dplyr::mutate(OppRk = as.numeric(OppRk)) %>%
     dplyr::mutate(Status = substr(Status,1,7)) %>%
     dplyr::mutate(Status = factor(stringr::str_trim(Status))) %>%
     dplyr::mutate(Opponent = gsub("\\*","",Opponent)) %>%

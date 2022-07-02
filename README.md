@@ -7,7 +7,9 @@ frisbee team rankings straightforward & easy.
 Install the package using the code below.
 
 ``` r
-devtools::install_github("https://github.com/bbwieland/fRisbee",upgrade = "ask",force = F)
+devtools::install_github("https://github.com/bbwieland/fRisbee",
+                         upgrade = "ask",
+                         force = F)
 library(fRisbee)
 ```
 
@@ -47,12 +49,22 @@ data = fRisbee::GetFrisbeeRankings(DivisionIOnly = T) %>%
     ## Warning in mask$eval_all_mutate(quo): NAs introduced by coercion
 
 ``` r
-ggplot(data,aes(x = SoS,y = Rating,label = Team)) +
+ggplot(data,aes(x = SoS,
+                y = Rating,
+                label = Team)) +
   geom_point() +
   geom_smooth(method = "lm", se = F,linetype = "dashed") +
   geom_text_repel(max.overlaps = 8) +
-  annotate("label",x = 750, y = 2000, label = "Overperform vs. schedule",size = 4) +
-  annotate("label",x = 1500, y = 500, label = "Underperform vs. schedule",size = 4) +
+  annotate("label",
+           x = 750, 
+           y = 2000, 
+           label = "Overperform vs. schedule",
+           size = 4) +
+  annotate("label",
+           x = 1500, 
+           y = 500, 
+           label = "Underperform vs. schedule",
+           size = 4) +
   theme_classic() +
   labs(title = "How does each team perform, relative to its strength of schedule?",
        x = "Strength of schedule (average opp. rating)",
@@ -104,8 +116,11 @@ virginia %>%
 
 ggplot(virginia %>% filter(Status == "Counts"),aes(x = OpponentRating, y = PtDiff,label = Opponent)) +
   geom_point() + 
-  geom_smooth(method = "lm",se = F) +
-  geom_hline(yintercept = 0,color = "red", linetype = "dashed") +
+  geom_smooth(method = "lm",
+              se = F) +
+  geom_hline(yintercept = 0,
+             color = "red", 
+             linetype = "dashed") +
   geom_text_repel(max.overlaps = Inf) +
   theme_classic() +
   labs(title = "Virginia team performance by opponent strength",
@@ -149,10 +164,12 @@ scores = seq %>%
   map(~GameScoreCalculator(winner_score = 13, loser_score = .x)) %>%
   unlist()
 
-plot_data = data.frame(opp_points = seq, score = scores)
+plot_data = data.frame(opp_points = seq, 
+                       score = scores)
 
 ggplot(plot_data,aes(opp_points,score)) +
-  scale_x_continuous(limits = c(0,12),breaks = seq(1,12,1)) +
+  scale_x_continuous(limits = c(0,12),
+                     breaks = seq(1,12,1)) +
   geom_line() +
   theme_classic() +
   labs(x = "Opponent Points Scored",
@@ -179,7 +196,10 @@ rating will be affected by the outcome.
 
 ``` r
 # In an evenly matched game, a close victory results in a ratings increase.
-fRisbee::RatingAdjustedGameScoreCalculator(winner_rating = 1500,loser_rating = 1500,winner_score = 13, loser_score = 12)
+fRisbee::RatingAdjustedGameScoreCalculator(winner_rating = 1500,
+                                           loser_rating = 1500,
+                                           winner_score = 13, 
+                                           loser_score = 12)
 ```
 
     ##     Team Initial GameScore Difference Increased
@@ -188,7 +208,10 @@ fRisbee::RatingAdjustedGameScoreCalculator(winner_rating = 1500,loser_rating = 1
 
 ``` r
 # However, a highly-favored team winning a close game actually results in a ratings increase for the LOSING team.
-fRisbee::RatingAdjustedGameScoreCalculator(winner_rating = 1500,loser_rating = 1000,winner_score = 13, loser_score = 12)
+fRisbee::RatingAdjustedGameScoreCalculator(winner_rating = 1500,
+                                           loser_rating = 1000,
+                                           winner_score = 13, 
+                                           loser_score = 12)
 ```
 
     ##     Team Initial GameScore Difference Increased
@@ -205,13 +228,16 @@ pulls the most recent ratings for those teams, and calculates the game
 score change accordingly.
 
 ``` r
-fRisbee::RatingAdjustedGameScoreCalculatorTeam(winner_team = "Virginia",loser_team = "Virginia Tech",winner_score = 13, loser_score = 8)
+fRisbee::RatingAdjustedGameScoreCalculatorTeam(winner_team = "Virginia",
+                                               loser_team = "Virginia Tech",
+                                               winner_score = 13, 
+                                               loser_score = 8)
 ```
 
     ##            Name   Team Initial GameScore Difference Increased
     ## 1      Virginia winner 1514.83   1826.13   311.2996      TRUE
     ## 2 Virginia Tech  loser 1329.97   1018.67  -311.2996     FALSE
 
-All data in this vignette as of May 7, 2022. Data sourced from
-frisbee-rankings.com — thanks to Cody Mills for developing the rankings
-site!
+Data sourced from <https://www.frisbee-rankings.com/> — thanks to Cody
+Mills for developing the rankings site! Ratings algorithm from the guide
+at <https://play.usaultimate.org/teams/events/rankings/>

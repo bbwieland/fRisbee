@@ -9,7 +9,7 @@ RatingAdjustedGameScoreCalculatorTeam(
   loser_team,
   winner_score,
   loser_score,
-  input_data = suppressWarnings(GetFrisbeeRankings())
+  league_type
 )
 }
 \arguments{
@@ -20,6 +20,8 @@ RatingAdjustedGameScoreCalculatorTeam(
 \item{winner_score}{The score of the winning team.}
 
 \item{loser_score}{The score of the losing team.}
+
+\item{league_type}{The league type of the game. Should be equal to "mens" for men's games and "womens" for women's games. Other values will return an error.}
 }
 \description{
 This function calculates game score using the USA Ultimate Rankings Algorithm.
@@ -29,5 +31,5 @@ Then, it pulls that team's most updated rating from the rankings site and calcul
 Returns a dataframe with information.
 }
 \examples{
-RatingAdjustedGameScoreCalculatorTeam("Virginia","Virginia Tech",13,6)
+RatingAdjustedGameScoreCalculatorTeam("Virginia","Virginia Tech",13,6,league_type = "mens")
 }

@@ -13,5 +13,5 @@ GetTeamResultsWomen(team)
 This function scrapes a team's game results and computes some useful info for each game.
 }
 \examples{
-GetTeamResults("Virginia")
+GetTeamResultsWomen("Virginia")
 }

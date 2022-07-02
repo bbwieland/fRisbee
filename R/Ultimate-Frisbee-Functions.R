@@ -6,9 +6,9 @@
 #' @keywords
 #' @export
 #' @examples
-#' GetFrisbeeRankings()
+#' GetFrisbeeRankingsMen()
 
-GetFrisbeeRankings = function(DivisionIOnly = F,SimpleTable = F){
+GetFrisbeeRankingsMen = function(DivisionIOnly = F,SimpleTable = F){
 
   site = rvest::read_html("https://www.frisbee-rankings.com/usau/college/men")
   data = (site %>% rvest::html_table())[[1]][,-c(2,6)] %>%
@@ -144,12 +144,25 @@ RatingAdjustedGameScoreCalculator = function(winner_rating,loser_rating,winner_s
 #' @param loser_team The name of the losing team.
 #' @param winner_score The score of the winning team.
 #' @param loser_score The score of the losing team.
+#' @param league_type The league type of the game. Should be equal to "mens" for men's games and "womens" for women's games. Other values will return an error.
 #' @keywords
 #' @export
 #' @examples
-#' RatingAdjustedGameScoreCalculatorTeam("Virginia","Virginia Tech",13,6)
+#' RatingAdjustedGameScoreCalculatorTeam("Virginia","Virginia Tech",13,6,league_type = "mens")
 
-RatingAdjustedGameScoreCalculatorTeam = function(winner_team,loser_team,winner_score,loser_score,input_data = suppressWarnings(GetFrisbeeRankings())) {
+RatingAdjustedGameScoreCalculatorTeam = function(winner_team,loser_team,winner_score,loser_score,league_type) {
+
+  if(league_type != "mens" & league_type != "womens") {
+    stop("Invalid league type. League type should equal 'mens' for men's games and 'womens' for women's games.")
+  }
+
+  if (league_type == "mens") {
+    input_data = suppressWarnings(GetFrisbeeRankingsMen())
+  }
+
+  if (league_type == "womens") {
+    input_data = suppressWarnings(GetFrisbeeRankingsWomen())
+  }
 
   winner_rating = dplyr::pull(input_data[input_data$Team == winner_team,"Rating"])
   loser_rating = dplyr::pull(input_data[input_data$Team == loser_team,"Rating"])
@@ -177,9 +190,9 @@ RatingAdjustedGameScoreCalculatorTeam = function(winner_team,loser_team,winner_s
 #' @keywords
 #' @export
 #' @examples
-#' GetTeamResults("Virginia")
+#' GetTeamResultsMen("Virginia")
 
-GetTeamResults = function(team) {
+GetTeamResultsMen = function(team) {
 
   site = rvest::read_html("https://www.frisbee-rankings.com/usau/college/men")
   links = site %>% rvest::html_nodes("td:nth-child(3) a") %>% html_attr('href')
@@ -246,7 +259,7 @@ GetTeamResults = function(team) {
 #' @keywords
 #' @export
 #' @examples
-#' GetTeamResults("Virginia")
+#' GetTeamResultsWomen("Virginia")
 
 GetTeamResultsWomen = function(team) {
 
@@ -305,4 +318,35 @@ GetTeamResultsWomen = function(team) {
                   GameNum = seq(1:nrow(team.data.clean)))
 
   team.data.clean
+}
+
+#' Get pregame win probability
+#'
+#' This function returns the pregame win probability for a pair of teams, given each team's rating and the league type.
+#'
+#' @param TeamRating The rating of the first team playing in the game. The order of TeamRating and OpponentRating is interchangeable.
+#' @param OpponentRating The rating of the second team playing in the game. The order of TeamRating and OpponentRating is interchangeable.
+#' @param LeagueType The league type of the game. Should be equal to "mens" for men's games and "womens" for women's games. Other values will return an error.
+#' @keywords
+#' @export
+#' @examples
+#' UFWinProbability(1500,1400,"mens")
+#' UFWinProbability(1500,1400,"womens")
+UFWinProbability = function(TeamRating,OpponentRating,LeagueType) {
+
+  if(LeagueType != "mens" & LeagueType != "womens") {
+    stop("Invalid league type. League type should equal 'mens' for men's games and 'womens' for women's games.")
+  }
+
+  predict_df = data.frame(TeamRatingPregame = TeamRating, OpponentRating = OpponentRating)
+
+  if (LeagueType == "mens") {
+    pred_value = as.numeric(predict(logitmodelM,predict_df,type = "response"))
+  }
+
+  if (LeagueType == "womens") {
+    pred_value = as.numeric(predict(logitmodelW,predict_df,type = "response"))
+  }
+
+  return(pred_value)
 }

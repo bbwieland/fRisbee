@@ -59,3 +59,19 @@
 #' }
 #' @source \url{https://www.frisbee-rankings.com/}
 "gamesW"
+
+#' Win probability model for men's college Ultimate Frisbee
+#'
+#' A win probability model fit in base R using logistic regression to the modelM dataset with one feature: Elo difference.
+#'
+#' @format An R generalized linear model object.
+#' @source \url{https://www.frisbee-rankings.com/}
+"logitmodelM"
+
+#' Win probability model for women's college Ultimate Frisbee
+#'
+#' A win probability model fit in base R using logistic regression to the modelW dataset with one feature: Elo difference.
+#'
+#' @format An R generalized linear model object.
+#' @source \url{https://www.frisbee-rankings.com/}
+"logitmodelW"

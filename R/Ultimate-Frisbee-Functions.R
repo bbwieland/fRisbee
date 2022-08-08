@@ -6,9 +6,9 @@
 #' @keywords
 #' @export
 #' @examples
-#' GetFrisbeeRankingsMen()
+#' load_rankings_men()
 
-GetFrisbeeRankingsMen = function(DivisionIOnly = F,SimpleTable = F){
+load_rankings_men = function(DivisionIOnly = F,SimpleTable = F){
 
   site = rvest::read_html("https://www.frisbee-rankings.com/usau/college/men")
   data = (site %>% rvest::html_table())[[1]][,-c(2,6)] %>%
@@ -49,9 +49,9 @@ GetFrisbeeRankingsMen = function(DivisionIOnly = F,SimpleTable = F){
 #' @keywords
 #' @export
 #' @examples
-#' GetFrisbeeRankingsWomen()
+#' load_rankings_women()
 
-GetFrisbeeRankingsWomen = function(DivisionIOnly = F,SimpleTable = F){
+load_rankings_women = function(DivisionIOnly = F,SimpleTable = F){
 
   site = rvest::read_html("https://www.frisbee-rankings.com/usau/college/women")
   data = (site %>% rvest::html_table())[[1]][,-c(2,6)] %>%
@@ -93,10 +93,10 @@ GetFrisbeeRankingsWomen = function(DivisionIOnly = F,SimpleTable = F){
 #' @keywords
 #' @export
 #' @examples
-#' GameScoreCalculator(13,12)
-#' GameScoreCalculator(13,6)
+#' calculate_game_score(13,12)
+#' calculate_game_score(13,6)
 
-GameScoreCalculator = function(winner_score,loser_score) {
+calculate_game_score = function(winner_score,loser_score) {
   r = loser_score/(winner_score - 1)
 
   score = 125 + 475*(sin(min(1,(1 - r)/0.5)*0.4*pi)/sin(0.4*pi))
@@ -115,11 +115,11 @@ GameScoreCalculator = function(winner_score,loser_score) {
 #' @keywords
 #' @export
 #' @examples
-#' RatingAdjustedGameScoreCalculator(1500,1500,13,6)
+#' calculate_game_score_adjusted(1500,1500,13,6)
 
-RatingAdjustedGameScoreCalculator = function(winner_rating,loser_rating,winner_score,loser_score) {
+calculate_game_score_adjusted = function(winner_rating,loser_rating,winner_score,loser_score) {
 
-  gamescore = GameScoreCalculator(winner_score = winner_score, loser_score = loser_score)
+  gamescore = calculate_game_score(winner_score = winner_score, loser_score = loser_score)
 
   winner_game_rating = loser_rating + gamescore
   loser_game_rating = winner_rating - gamescore
@@ -137,7 +137,7 @@ RatingAdjustedGameScoreCalculator = function(winner_rating,loser_rating,winner_s
 #'
 #' This function calculates game score using the USA Ultimate Rankings Algorithm.
 #' Then, it determines the ratings changes as a result of that game outcome.
-#' Unlike its counterpart, RatingAdjustedGameScoreCalculator, it takes team names — not ratings — as inputs.
+#' Unlike its counterpart, calculate_game_score_adjusted, it takes team names — not ratings — as inputs.
 #' Then, it pulls that team's most updated rating from the rankings site and calculates the results.
 #' Returns a dataframe with information.
 #' @param winner_team The name of the winning team.
@@ -148,26 +148,26 @@ RatingAdjustedGameScoreCalculator = function(winner_rating,loser_rating,winner_s
 #' @keywords
 #' @export
 #' @examples
-#' RatingAdjustedGameScoreCalculatorTeam("Virginia","Virginia Tech",13,6,league_type = "mens")
+#' calculate_game_score_adjusted_team("Virginia","Virginia Tech",13,6,league_type = "mens")
 
-RatingAdjustedGameScoreCalculatorTeam = function(winner_team,loser_team,winner_score,loser_score,league_type) {
+calculate_game_score_adjusted_team = function(winner_team,loser_team,winner_score,loser_score,league_type) {
 
   if(league_type != "mens" & league_type != "womens") {
     stop("Invalid league type. League type should equal 'mens' for men's games and 'womens' for women's games.")
   }
 
   if (league_type == "mens") {
-    input_data = suppressWarnings(GetFrisbeeRankingsMen())
+    input_data = suppressWarnings(load_rankings_men())
   }
 
   if (league_type == "womens") {
-    input_data = suppressWarnings(GetFrisbeeRankingsWomen())
+    input_data = suppressWarnings(load_rankings_women())
   }
 
   winner_rating = dplyr::pull(input_data[input_data$Team == winner_team,"Rating"])
   loser_rating = dplyr::pull(input_data[input_data$Team == loser_team,"Rating"])
 
-  gamescore = GameScoreCalculator(winner_score = winner_score, loser_score = loser_score)
+  gamescore = calculate_game_score(winner_score = winner_score, loser_score = loser_score)
 
   winner_game_rating = loser_rating + gamescore
   loser_game_rating = winner_rating - gamescore
@@ -190,9 +190,9 @@ RatingAdjustedGameScoreCalculatorTeam = function(winner_team,loser_team,winner_s
 #' @keywords
 #' @export
 #' @examples
-#' GetTeamResultsMen("Virginia")
+#' load_team_results_men("Virginia")
 
-GetTeamResultsMen = function(team) {
+load_team_results_men = function(team) {
 
   site = rvest::read_html("https://www.frisbee-rankings.com/usau/college/men")
   links = site %>% rvest::html_nodes("td:nth-child(3) a") %>% html_attr('href')
@@ -259,9 +259,9 @@ GetTeamResultsMen = function(team) {
 #' @keywords
 #' @export
 #' @examples
-#' GetTeamResultsWomen("Virginia")
+#' load_team_results_women("Virginia")
 
-GetTeamResultsWomen = function(team) {
+load_team_results_women = function(team) {
 
   site = rvest::read_html("https://www.frisbee-rankings.com/usau/college/women")
   links = site %>% rvest::html_nodes("td:nth-child(3) a") %>% html_attr('href')
@@ -330,9 +330,9 @@ GetTeamResultsWomen = function(team) {
 #' @keywords
 #' @export
 #' @examples
-#' UFWinProbability(1500,1400,"mens")
-#' UFWinProbability(1500,1400,"womens")
-UFWinProbability = function(TeamRating,OpponentRating,LeagueType) {
+#' calculate_win_probability(1500,1400,"mens")
+#' calculate_win_probability(1500,1400,"womens")
+calculate_win_probability = function(TeamRating,OpponentRating,LeagueType) {
 
   if(LeagueType != "mens" & LeagueType != "womens") {
     stop("Invalid league type. League type should equal 'mens' for men's games and 'womens' for women's games.")

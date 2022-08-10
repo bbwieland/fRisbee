@@ -17,7 +17,7 @@ load_rankings_men = function(DivisionIOnly = F,SimpleTable = F){
     dplyr::mutate(Team = ifelse(Ranked,substr(Team,1, nchar(Team) - 5),Team)) %>%
     dplyr::mutate(Rank = as.numeric(Rank))
 
-  wins.losses = unlist(str_split(data$Record,"-"))
+  wins.losses = unlist(stringr::str_split(data$Record,"-"))
 
   data = data %>%
     dplyr::mutate(Wins = as.numeric(wins.losses[seq(from = 1,to = length(wins.losses),by = 2)]),
@@ -60,7 +60,7 @@ load_rankings_women = function(DivisionIOnly = F,SimpleTable = F){
     dplyr::mutate(Team = ifelse(Ranked,substr(Team,1, nchar(Team) - 5),Team)) %>%
     dplyr::mutate(Rank = as.numeric(Rank))
 
-  wins.losses = unlist(str_split(data$Record,"-"))
+  wins.losses = unlist(stringr::str_split(data$Record,"-"))
 
   data = data %>%
     dplyr::mutate(Wins = as.numeric(wins.losses[seq(from = 1,to = length(wins.losses),by = 2)]),

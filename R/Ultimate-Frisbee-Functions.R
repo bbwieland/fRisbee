@@ -195,8 +195,8 @@ calculate_game_score_adjusted_team = function(winner_team,loser_team,winner_scor
 load_team_results_men = function(team) {
 
   site = rvest::read_html("https://www.frisbee-rankings.com/usau/college/men")
-  links = site %>% rvest::html_nodes("td:nth-child(3) a") %>% html_attr('href')
-  teams = site %>% rvest::html_nodes("td:nth-child(3) a") %>% html_text()
+  links = site %>% rvest::html_nodes("td:nth-child(3) a") %>% rvest::html_attr('href')
+  teams = site %>% rvest::html_nodes("td:nth-child(3) a") %>% rvest::html_text()
   df = data.frame(Teams = teams,URLs = links)
 
   df.for.pull = df[which(df$Teams == team),]
@@ -206,15 +206,15 @@ load_team_results_men = function(team) {
   team.site = rvest::read_html(scraper.url)
   team.data = (team.site %>% rvest::html_table())[[1]]
 
-  opponent.rankings = (team.site %>% html_nodes("td:nth-child(2) a") %>% html_attr("title")) %>%
+  opponent.rankings = (team.site %>% rvest::html_nodes("td:nth-child(2) a") %>% rvest::html_attr("title")) %>%
     gsub("[^0-9.]","",.) %>%
     as.numeric()
 
-  postgame.rating = (team.site %>% html_nodes("td:nth-child(4) span") %>% html_attr("title")) %>%
+  postgame.rating = (team.site %>% rvest::html_nodes("td:nth-child(4) span") %>% rvest::html_attr("title")) %>%
     gsub("[^0-9.]","",.) %>%
     as.numeric()
 
-  game.scores = (team.site %>% html_nodes("td:nth-child(3) span") %>% html_attr("title")) %>%
+  game.scores = (team.site %>% rvest::html_nodes("td:nth-child(3) span") %>% rvest::html_attr("title")) %>%
     gsub("[^0-9.]","",.) %>%
     as.numeric()
 
@@ -264,8 +264,8 @@ load_team_results_men = function(team) {
 load_team_results_women = function(team) {
 
   site = rvest::read_html("https://www.frisbee-rankings.com/usau/college/women")
-  links = site %>% rvest::html_nodes("td:nth-child(3) a") %>% html_attr('href')
-  teams = site %>% rvest::html_nodes("td:nth-child(3) a") %>% html_text()
+  links = site %>% rvest::html_nodes("td:nth-child(3) a") %>% rvest::html_attr('href')
+  teams = site %>% rvest::html_nodes("td:nth-child(3) a") %>% rvest::html_text()
   df = data.frame(Teams = teams,URLs = links)
 
   df.for.pull = df[which(df$Teams == team),]
@@ -275,15 +275,15 @@ load_team_results_women = function(team) {
   team.site = rvest::read_html(scraper.url)
   team.data = (team.site %>% rvest::html_table())[[1]]
 
-  opponent.rankings = (team.site %>% html_nodes("td:nth-child(2) a") %>% html_attr("title")) %>%
+  opponent.rankings = (team.site %>% rvest::html_nodes("td:nth-child(2) a") %>% rvest::html_attr("title")) %>%
     gsub("[^0-9.]","",.) %>%
     as.numeric()
 
-  postgame.rating = (team.site %>% html_nodes("td:nth-child(4) span") %>% html_attr("title")) %>%
+  postgame.rating = (team.site %>% rvest::html_nodes("td:nth-child(4) span") %>% rvest::html_attr("title")) %>%
     gsub("[^0-9.]","",.) %>%
     as.numeric()
 
-  game.scores = (team.site %>% html_nodes("td:nth-child(3) span") %>% html_attr("title")) %>%
+  game.scores = (team.site %>% rvest::html_nodes("td:nth-child(3) span") %>% rvest::html_attr("title")) %>%
     gsub("[^0-9.]","",.) %>%
     as.numeric()
 
@@ -327,6 +327,7 @@ load_team_results_women = function(team) {
 #' @param TeamRating The rating of the first team playing in the game. The order of TeamRating and OpponentRating is interchangeable.
 #' @param OpponentRating The rating of the second team playing in the game. The order of TeamRating and OpponentRating is interchangeable.
 #' @param LeagueType The league type of the game. Should be equal to "mens" for men's games and "womens" for women's games. Other values will return an error.
+#' @importFrom stats predict
 #' @keywords
 #' @export
 #' @examples
@@ -473,7 +474,7 @@ load_audl_player_stats = function(season, stat_type = "game") {
   }
 
   df = df %>%
-    mutate(across(c(oEfficiency, huckPercentage, completionPercentage),as.numeric))
+    dplyr::mutate(across(c(oEfficiency, huckPercentage, completionPercentage),as.numeric))
 
   return(df)
 }
@@ -579,7 +580,7 @@ load_audl_games = function(seasons) {
   }
 
   df = df %>%
-    mutate(gameDate = as.Date(substr(startTimestamp,1,10), format = "%Y-%m-%d"))
+    dplyr::mutate(gameDate = as.Date(substr(startTimestamp,1,10), format = "%Y-%m-%d"))
 
   return(df)
 }

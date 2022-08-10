@@ -12,5 +12,7 @@ LazyData: true
 Depends:
     tidyverse,
     rvest,
+    magrittr,
+    Jsonlite,
     R (>= 2.10)
 RoxygenNote: 7.1.2.9000

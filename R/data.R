@@ -75,3 +75,18 @@
 #' @format An R generalized linear model object.
 #' @source \url{https://www.frisbee-rankings.com/}
 "logitmodelW"
+
+#' Glossary containing AUDL team names and logos
+#'
+#' A win probability model fit in base R using logistic regression to the modelW dataset with one feature: Elo difference.
+#'
+#' @format A data frame with 25 rows and 4 variables:
+#' \describe{
+#'   \item{teamCity}{The team's home city.}
+#'   \item{teamName}{The team's nickname.}
+#'   \item{teamAbbr}{The team's two- or three-letter abbrevation.}
+#'   \item{logoURL}{URL of the team's logo.}
+#' }
+#' @source URLs come from a variety of sources: mostly the AUDL website, but when logos were unavailable there, they were accessed via Wikipedia or Shopify team site.s
+"glossary_AUDL_teams"
+

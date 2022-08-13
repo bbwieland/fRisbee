@@ -5,7 +5,6 @@
 #'
 #' @param season The season for which data is requested. All seasons since 2012 are documented, not including 2020 when the AUDL season was cancelled due to the COVID-19 pandemic.
 #' @param stat_type The desired statistic type. Set to "game" by default, for per-game statistics. Can also be set to "total" for total statistics, "10 points" for per-10-point statistics, or "10 possessions" for per-10-possession statistics.
-#' @keywords
 #' @export
 #' @examples
 #' load_audl_player_stats(2022)
@@ -133,7 +132,6 @@ load_audl_player_stats = function(season, stat_type = "game") {
 #' @param season The season for which data is requested. All seasons since 2012 are documented, not including 2020 when the AUDL season was cancelled due to the COVID-19 pandemic.
 #' @param stat_type The desired statistic type. Set to "game" by default, for per-game statistics. Can also be set to "total" for total statistics.
 #' @param team_type Which team the returned statistics should describe. "team" is the default, and will return the statistics for each team. "opponent" will return statistics for opponent performance against each team.
-#' @keywords
 #' @export
 #' @examples
 #' load_audl_team_stats(2022)
@@ -195,7 +193,6 @@ load_audl_team_stats = function(season, stat_type = "game", team_type = "team") 
 #' Loads information on all AUDL games from the specified season into memory, scraped from the AUDL website.
 #'
 #' @param seasons The seasons for which data is requested. All seasons since 2012 are documented, not including 2020 when the AUDL season was cancelled due to the COVID-19 pandemic.
-#' @keywords
 #' @export
 #' @examples
 #' load_audl_games(2022)

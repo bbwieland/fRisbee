@@ -3,7 +3,6 @@
 #' This function returns up-to-date ultimate frisbee rankings from frisbee-rankings.com
 #' @param DivisionIOnly Returns just D-I rankings if TRUE. Defaults to FALSE.
 #' @param SimpleTable Returns just a table with team info & rating if TRUE. Defaults to FALSE.
-#' @keywords
 #' @export
 #' @examples
 #' load_rankings_men()
@@ -46,7 +45,6 @@ load_rankings_men = function(DivisionIOnly = F,SimpleTable = F){
 #' This function returns up-to-date ultimate frisbee rankings from frisbee-rankings.com
 #' @param DivisionIOnly Returns just D-I rankings if TRUE. Defaults to FALSE.
 #' @param SimpleTable Returns just a table with team info & rating if TRUE. Defaults to FALSE.
-#' @keywords
 #' @export
 #' @examples
 #' load_rankings_women()

@@ -4,7 +4,6 @@
 #'This function scrapes a team's game results and computes some useful info for each game.
 #'
 #' @param team The name of the team you want to scrape data for.
-#' @keywords
 #' @export
 #' @examples
 #' load_team_results_men("Virginia")
@@ -73,7 +72,6 @@ load_team_results_men = function(team) {
 #'This function scrapes a team's game results and computes some useful info for each game.
 #'
 #' @param team The name of the team you want to scrape data for.
-#' @keywords
 #' @export
 #' @examples
 #' load_team_results_women("Virginia")

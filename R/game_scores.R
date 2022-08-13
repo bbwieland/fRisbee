@@ -4,7 +4,6 @@
 #' It returns the game score for the winning team.
 #' @param winner_score The score of the winning team.
 #' @param loser_score The score of the losing team.
-#' @keywords
 #' @export
 #' @examples
 #' calculate_game_score(13,12)
@@ -26,7 +25,6 @@ calculate_game_score = function(winner_score,loser_score) {
 #' @param loser_rating The rating of the losing team.
 #' @param winner_score The score of the winning team.
 #' @param loser_score The score of the losing team.
-#' @keywords
 #' @export
 #' @examples
 #' calculate_game_score_adjusted(1500,1500,13,6)
@@ -59,7 +57,6 @@ calculate_game_score_adjusted = function(winner_rating,loser_rating,winner_score
 #' @param winner_score The score of the winning team.
 #' @param loser_score The score of the losing team.
 #' @param league_type The league type of the game. Should be equal to "mens" for men's games and "womens" for women's games. Other values will return an error.
-#' @keywords
 #' @export
 #' @examples
 #' calculate_game_score_adjusted_team("Virginia","Virginia Tech",13,6,league_type = "mens")

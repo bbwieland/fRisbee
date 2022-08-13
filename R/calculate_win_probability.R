@@ -7,7 +7,6 @@
 #' @param OpponentRating The rating of the second team playing in the game. The order of TeamRating and OpponentRating is interchangeable.
 #' @param LeagueType The league type of the game. Should be equal to "mens" for men's games and "womens" for women's games. Other values will return an error.
 #' @importFrom stats predict
-#' @keywords
 #' @export
 #' @examples
 #' calculate_win_probability(1500,1400,"mens")

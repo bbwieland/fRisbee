@@ -9,6 +9,8 @@
 
 load_rankings_men = function(DivisionIOnly = F,SimpleTable = F){
 
+  Team = Ranked = Rank = Wins = Losses = `%` = ContributionPct = Div = Region = RegionRank = Record = WinPct = Rating = Conference = Division = SoS = PDC = NULL
+
   site = rvest::read_html("https://www.frisbee-rankings.com/usau/college/men")
   data = (site %>% rvest::html_table())[[1]][,-c(2,6)] %>%
     dplyr::mutate(Ranked = ifelse(is.na(as.numeric(substr(Team,nchar(Team)-1,nchar(Team)))), F, T)) %>%
@@ -50,6 +52,8 @@ load_rankings_men = function(DivisionIOnly = F,SimpleTable = F){
 #' load_rankings_women()
 
 load_rankings_women = function(DivisionIOnly = F,SimpleTable = F){
+
+  Team = Ranked = Rank = Wins = Losses = `%` = ContributionPct = Div = Region = RegionRank = Record = WinPct = Rating = Conference = Division = SoS = PDC = NULL
 
   site = rvest::read_html("https://www.frisbee-rankings.com/usau/college/women")
   data = (site %>% rvest::html_table())[[1]][,-c(2,6)] %>%

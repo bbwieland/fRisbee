@@ -10,6 +10,8 @@
 
 load_team_results_men = function(team) {
 
+  `.` = `#` = `% of Ranking` = OppRk = Opponent = Result = Effect = Status = PctOfRanking = Date = Event = Pts = OppPts = Win = GameScore = OpponentRating = TeamRatingPostgame = GameValue = NULL
+
   site = rvest::read_html("https://www.frisbee-rankings.com/usau/college/men")
   links = site %>% rvest::html_nodes("td:nth-child(3) a") %>% rvest::html_attr('href')
   teams = site %>% rvest::html_nodes("td:nth-child(3) a") %>% rvest::html_text()
@@ -77,6 +79,8 @@ load_team_results_men = function(team) {
 #' load_team_results_women("Virginia")
 
 load_team_results_women = function(team) {
+
+  `.` = `#` = `% of Ranking` = OppRk = Opponent = Result = Effect = Status = PctOfRanking = Date = Event = Pts = OppPts = Win = GameScore = OpponentRating = TeamRatingPostgame = GameValue = NULL
 
   site = rvest::read_html("https://www.frisbee-rankings.com/usau/college/women")
   links = site %>% rvest::html_nodes("td:nth-child(3) a") %>% rvest::html_attr('href')

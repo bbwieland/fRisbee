@@ -31,6 +31,8 @@ calculate_game_score = function(winner_score,loser_score) {
 
 calculate_game_score_adjusted = function(winner_rating,loser_rating,winner_score,loser_score) {
 
+  GameScore = Initial = Difference = NULL
+
   gamescore = calculate_game_score(winner_score = winner_score, loser_score = loser_score)
 
   winner_game_rating = loser_rating + gamescore
@@ -62,6 +64,8 @@ calculate_game_score_adjusted = function(winner_rating,loser_rating,winner_score
 #' calculate_game_score_adjusted_team("Virginia","Virginia Tech",13,6,league_type = "mens")
 
 calculate_game_score_adjusted_team = function(winner_team,loser_team,winner_score,loser_score,league_type) {
+
+  GameScore = Initial = Difference = NULL
 
   if(league_type != "mens" & league_type != "womens") {
     stop("Invalid league type. League type should equal 'mens' for men's games and 'womens' for women's games.")

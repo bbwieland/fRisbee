@@ -8,9 +8,12 @@
 #' @export
 #' @examples
 #' load_audl_player_stats(2022)
-#' load_audl_player_stats(2021, stat_type = "10 points")
+#' load_audl_player_stats(2021, stat_type = "10 possessions")
 
 load_audl_player_stats = function(season, stat_type = "game") {
+
+  scores = assists = goals = plusMinus = completions = completionPercentage = hockeyAssists = throwaways = stalls = drops = blocks = callahans = pulls = yardsTotal = yardsThrown = yardsReceived = hucksCompleted = huckPercentage = minutesPlayed = possessions = oEfficiency = pointsPlayed = oPointsPlayed = dPointsPlayed = NULL
+
   valid_seasons = c(2012:2019,2021,2022)
 
   if (season %in% valid_seasons == F) {
@@ -45,6 +48,15 @@ load_audl_player_stats = function(season, stat_type = "game") {
 
       df = rbind(df,new_df)
     }
+    df = df %>%
+      dplyr::mutate(dplyr::across(c(scores, assists, goals,
+                                    plusMinus, completions,
+                                    completionPercentage, hockeyAssists,
+                                    throwaways, stalls, drops, blocks, callahans,
+                                    pulls, yardsTotal, yardsThrown, yardsReceived,
+                                    hucksCompleted, huckPercentage,
+                                    minutesPlayed, possessions, oEfficiency,
+                                    pointsPlayed, oPointsPlayed, dPointsPlayed), as.numeric))
   }
 
   if (stat_type == "game") {
@@ -69,6 +81,16 @@ load_audl_player_stats = function(season, stat_type = "game") {
 
       df = rbind(df,new_df)
     }
+
+    df = df %>%
+      dplyr::mutate(dplyr::across(c(scores, assists, goals,
+                                    plusMinus, completions,
+                                    completionPercentage, hockeyAssists,
+                                    throwaways, stalls, drops, blocks, callahans,
+                                    pulls, yardsTotal, yardsThrown, yardsReceived,
+                                    hucksCompleted, huckPercentage,
+                                    minutesPlayed, possessions, oEfficiency,
+                                    pointsPlayed, oPointsPlayed, dPointsPlayed), as.numeric))
   }
 
   if (stat_type == "10 points") {
@@ -93,6 +115,15 @@ load_audl_player_stats = function(season, stat_type = "game") {
 
       df = rbind(df,new_df)
     }
+    df = df %>%
+      dplyr::mutate(dplyr::across(c(scores, assists, goals,
+                                    plusMinus, completions,
+                                    completionPercentage, hockeyAssists,
+                                    throwaways, stalls, drops, blocks, callahans,
+                                    pulls, yardsTotal, yardsThrown, yardsReceived,
+                                    hucksCompleted, huckPercentage,
+                                    minutesPlayed, possessions, oEfficiency,
+                                    pointsPlayed, oPointsPlayed, dPointsPlayed), as.numeric))
   }
 
   if (stat_type == "10 possessions") {
@@ -117,12 +148,19 @@ load_audl_player_stats = function(season, stat_type = "game") {
 
       df = rbind(df,new_df)
     }
+    df = df %>%
+      dplyr::mutate(dplyr::across(c(scores, assists, goals,
+                                    plusMinus, completions,
+                                    completionPercentage, hockeyAssists,
+                                    throwaways, stalls, drops,
+                                    yardsTotal, yardsThrown, yardsReceived,
+                                    hucksCompleted, huckPercentage,
+                                    minutesPlayed, possessions, oEfficiency,
+                                    pointsPlayed, oPointsPlayed, dPointsPlayed), as.numeric))
   }
 
-  df = df %>%
-    dplyr::mutate(across(c(oEfficiency, huckPercentage, completionPercentage),as.numeric))
-
   return(df)
+
 }
 
 #' Load AUDL team statistics
@@ -137,6 +175,8 @@ load_audl_player_stats = function(season, stat_type = "game") {
 #' load_audl_team_stats(2022)
 #' load_audl_team_stats(2022, stat_type = "total", team_type = "opponent")
 load_audl_team_stats = function(season, stat_type = "game", team_type = "team") {
+
+  wins = losses = scoresFor = scoresAgainst = completions = turnovers = blocks = completionPercentage = holdPercentage = huckCompletions = huckPercentage = oLineConversionPercentage = dLineConversionPercentage = breakPercentage = redZoneConversionPercentage = opponentCompletions = opponentTurnovers = opponentBlocks = opponentCompletionPercentage = opponentHoldPercentage = opponentOLineConversionPercentage = opponentBreakPercentage = opponentDLineConversionPercentage = opponentHuckCompletions = opponentHuckPercentage = opponentRedZoneConversionPercentage = holds = breaks = huckTurnovers = opponentHolds = opponentBreaks = opponentHuckTurnovers = NULL
 
   valid_seasons = c(2012:2019,2021,2022)
 
@@ -160,11 +200,31 @@ load_audl_team_stats = function(season, stat_type = "game", team_type = "team") 
     if (team_type == "team") {
       url = paste0("https://www.backend.audlstats.com/web-api/team-stats?limit=50&year=",season)
       df = jsonlite::fromJSON(url)$stats
+
+      df = df %>%
+        dplyr::mutate(dplyr::across(c(wins, losses,
+                                      scoresFor, scoresAgainst,
+                                      completions, turnovers,
+                                      blocks, completionPercentage, holdPercentage,
+                                      huckCompletions, huckPercentage,
+                                      oLineConversionPercentage, dLineConversionPercentage,
+                                      breakPercentage, redZoneConversionPercentage),
+                                    as.numeric))
     }
 
     if (team_type == "opponent") {
       url = paste0("https://www.backend.audlstats.com/web-api/team-stats?limit=50&year=",season,"&opponent=true")
       df = jsonlite::fromJSON(url)$stats
+
+      df = df %>%
+        dplyr::mutate(dplyr::across(c(wins, losses,
+                                      scoresFor, scoresAgainst,
+                                      opponentCompletions, opponentTurnovers,
+                                      opponentBlocks, opponentCompletionPercentage, opponentHoldPercentage,
+                                      opponentOLineConversionPercentage, opponentBreakPercentage,
+                                      opponentDLineConversionPercentage, opponentHuckCompletions,
+                                      opponentHuckPercentage, opponentRedZoneConversionPercentage),
+                                    as.numeric))
     }
 
   }
@@ -173,11 +233,27 @@ load_audl_team_stats = function(season, stat_type = "game", team_type = "team") 
     if (team_type == "team") {
       url = paste0("https://www.backend.audlstats.com/web-api/team-stats?limit=50&year=",season,"&perGame=true")
       df = jsonlite::fromJSON(url)$stats
+
+      df = df %>%
+        dplyr::mutate(dplyr::across(c(wins, losses,
+                                      scoresFor, scoresAgainst,
+                                      completions, turnovers,
+                                      blocks, holds, breaks,
+                                      huckCompletions, huckTurnovers),
+                                    as.numeric))
     }
 
     if (team_type == "opponent") {
       url = paste0("https://www.backend.audlstats.com/web-api/team-stats?limit=50&year=",season,"&perGame=true&opponent=true")
       df = jsonlite::fromJSON(url)$stats
+
+      df = df %>%
+        dplyr::mutate(dplyr::across(c(wins, losses,
+                                      scoresFor, scoresAgainst,
+                                      opponentCompletions, opponentTurnovers,
+                                      opponentBlocks, opponentHolds, opponentBreaks,
+                                      opponentHuckCompletions, opponentHuckTurnovers),
+                                    as.numeric))
     }
 
   }
@@ -199,6 +275,8 @@ load_audl_team_stats = function(season, stat_type = "game", team_type = "team") 
 #' load_audl_games(c(2019,2021,2022))
 #'
 load_audl_games = function(seasons) {
+
+  startTimestamp = NULL
 
   seasons_string = paste(seasons,collapse=",")
   page = 1

@@ -13,6 +13,9 @@
 #' calculate_win_probability(1500,1400,"womens")
 calculate_win_probability = function(TeamRating,OpponentRating,LeagueType) {
 
+  logitmodelM = logitmodelM
+  logitmodelW = logitmodelW
+
   if(LeagueType != "mens" & LeagueType != "womens") {
     stop("Invalid league type. League type should equal 'mens' for men's games and 'womens' for women's games.")
   }

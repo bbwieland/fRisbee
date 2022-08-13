@@ -24,7 +24,7 @@ A data frame with 4220 rows and 21 variables:
   \item{TeamRatingPostgame}{The team's Elo rating after playing the game.}
   \item{GameValue}{The implied Elo rating that the team played at in the game.}
   \item{TeamRatingPregame}{The team's Elo rating before playing the game.}
-  \item{GaneValueUsed}{Equal to GameValue where Status is Counts. 0 where Status is Ignored.}
+  \item{GameValueUsed}{Equal to GameValue where Status is Counts. 0 where Status is Ignored.}
   \item{RatingsImpact}{The impact of the game result on a team's Elo rating.}
   \item{Team}{The name of the team.}
   \item{GameNum}{The game number in the season; for example, GameNum = 1 for a team's first game of the year.}

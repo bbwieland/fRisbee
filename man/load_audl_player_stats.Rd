@@ -16,5 +16,5 @@ Loads AUDL player statistics from the specified season into memory, scraped from
 }
 \examples{
 load_audl_player_stats(2022)
-load_audl_player_stats(2021, stat_type = "10 points")
+load_audl_player_stats(2021, stat_type = "10 possessions")
 }

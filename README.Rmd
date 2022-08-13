@@ -34,27 +34,46 @@ And the development version from [GitHub](https://github.com/) with:
 # install.packages("devtools")
 devtools::install_github("bbwieland/fRisbee")
 ```
-## Example
+## Example: Evaluating AUDL team performance
 
 This is a basic example which shows you how to solve a common problem:
 
-```{r example}
+```{r}
 library(fRisbee)
-## basic example code
+
+team_stats = fRisbee::load_audl_team_stats(season = 2022, stat_type = "game")
+str(team_stats)
 ```
 
-What is special about using `README.Rmd` instead of just `README.md`? You can include R chunks like so:
+```{r}
+library(dplyr)
 
-```{r cars}
-summary(cars)
+# creating a 'net rating' variable:
+
+team_stats = team_stats %>%
+  dplyr::mutate(netRating = scoresFor - scoresAgainst)
+
+# attaching the dataframe of team logos, glossary_AUDL_teams
+
+team_stats = team_stats %>%
+  dplyr::left_join(fRisbee::glossary_AUDL_teams, by = "teamName")
+
 ```
 
-You'll still need to render `README.Rmd` regularly, to keep `README.md` up-to-date. `devtools::build_readme()` is handy for this. You could also use GitHub Actions to re-render `README.Rmd` every time you push. An example workflow can be found here: <https://github.com/r-lib/actions/tree/master/examples>.
+```{r}
+library(ggplot2)
 
-You can also embed plots, for example:
-
-```{r pressure, echo = FALSE}
-plot(pressure)
+ggplot2::ggplot(team_stats, aes(x = netRating, y= reorder(teamName, netRating))) +
+  geom_col() +
+  labs(x = "Net Rating", y = "Team",
+       title = "AUDL Net Ratings - 2022 Season") +
+  theme_bw()
 ```
 
-In that case, don't forget to commit and push the resulting figure files, so they display on GitHub and CRAN.
+```{r}
+library(ggimage)
+
+ggplot2::ggplot(team_stats, aes(x = scoresFor, y = scoresAgainst)) +
+  geom_image(aes(image = logoURL), asp = 1)
+```
+

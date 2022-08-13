@@ -24,72 +24,73 @@ And the development version from [GitHub](https://github.com/) with:
 devtools::install_github("bbwieland/fRisbee")
 ```
 
-## Example
+## Example: Evaluating AUDL team performance
 
 This is a basic example which shows you how to solve a common problem:
 
 ``` r
 library(fRisbee)
-#> Loading required package: tidyverse
-#> ── Attaching packages ─────────────────────────────────────── tidyverse 1.3.1 ──
-#> ✔ ggplot2 3.3.6     ✔ purrr   0.3.4
-#> ✔ tibble  3.1.7     ✔ dplyr   1.0.9
-#> ✔ tidyr   1.2.0     ✔ stringr 1.4.0
-#> ✔ readr   2.1.2     ✔ forcats 0.5.1
-#> Warning: package 'tidyr' was built under R version 4.0.5
-#> Warning: package 'readr' was built under R version 4.0.5
-#> ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
-#> ✖ dplyr::filter() masks stats::filter()
-#> ✖ dplyr::lag()    masks stats::lag()
-#> Loading required package: rvest
-#> 
-#> Attaching package: 'rvest'
-#> The following object is masked from 'package:readr':
-#> 
-#>     guess_encoding
-#> Loading required package: magrittr
-#> Warning: package 'magrittr' was built under R version 4.0.5
-#> 
-#> Attaching package: 'magrittr'
-#> The following object is masked from 'package:purrr':
-#> 
-#>     set_names
-#> The following object is masked from 'package:tidyr':
-#> 
-#>     extract
-#> Loading required package: jsonlite
-#> Warning: package 'jsonlite' was built under R version 4.0.5
-#> 
-#> Attaching package: 'jsonlite'
-#> The following object is masked from 'package:purrr':
-#> 
-#>     flatten
-## basic example code
-```
 
-What is special about using `README.Rmd` instead of just `README.md`?
-You can include R chunks like so:
+team_stats = fRisbee::load_audl_team_stats(season = 2022, stat_type = "game")
+str(team_stats)
+#> 'data.frame':    25 obs. of  14 variables:
+#>  $ teamID         : chr  "empire" "flyers" "summit" "union" ...
+#>  $ teamName       : chr  "Empire" "Flyers" "Summit" "Union" ...
+#>  $ gamesPlayed    : int  12 12 12 12 12 12 12 12 12 12 ...
+#>  $ wins           : num  1 0.92 0.92 0.92 0.83 0.83 0.75 0.75 0.75 0.67 ...
+#>  $ losses         : num  0 0.08 0.08 0.08 0.17 0.17 0.25 0.25 0.25 0.33 ...
+#>  $ scoresFor      : num  25.1 22.1 24.5 24.3 23.9 ...
+#>  $ scoresAgainst  : num  16.8 17.1 19.2 19.1 20 ...
+#>  $ completions    : num  262 259 246 246 268 ...
+#>  $ turnovers      : num  13.5 13.7 15.2 15.8 14.2 ...
+#>  $ blocks         : num  11.5 9.33 11.17 9.58 10.25 ...
+#>  $ holds          : num  15 15.5 16 16.3 16.4 ...
+#>  $ breaks         : num  9.92 6.42 8.5 8 7.33 8.75 5.08 8.08 9.33 6.92 ...
+#>  $ huckCompletions: num  7.42 8.58 10.17 7.33 6.58 ...
+#>  $ huckTurnovers  : num  3.25 4.75 5 3.42 3.83 4.42 2.92 4.83 4.83 2.83 ...
+```
 
 ``` r
-summary(cars)
-#>      speed           dist       
-#>  Min.   : 4.0   Min.   :  2.00  
-#>  1st Qu.:12.0   1st Qu.: 26.00  
-#>  Median :15.0   Median : 36.00  
-#>  Mean   :15.4   Mean   : 42.98  
-#>  3rd Qu.:19.0   3rd Qu.: 56.00  
-#>  Max.   :25.0   Max.   :120.00
+library(dplyr)
+#> 
+#> Attaching package: 'dplyr'
+#> The following objects are masked from 'package:stats':
+#> 
+#>     filter, lag
+#> The following objects are masked from 'package:base':
+#> 
+#>     intersect, setdiff, setequal, union
+
+# creating a 'net rating' variable:
+
+team_stats = team_stats %>%
+  dplyr::mutate(netRating = scoresFor - scoresAgainst)
+
+# attaching the dataframe of team logos, glossary_AUDL_teams
+
+team_stats = team_stats %>%
+  dplyr::left_join(fRisbee::glossary_AUDL_teams, by = "teamName")
 ```
 
-You’ll still need to render `README.Rmd` regularly, to keep `README.md`
-up-to-date. `devtools::build_readme()` is handy for this. You could also
-use GitHub Actions to re-render `README.Rmd` every time you push. An
-example workflow can be found here:
-<https://github.com/r-lib/actions/tree/master/examples>.
+``` r
+library(ggplot2)
 
-You can also embed plots, for example:
+ggplot2::ggplot(team_stats, aes(x = netRating, y= reorder(teamName, netRating))) +
+  geom_col() +
+  labs(x = "Net Rating", y = "Team",
+       title = "AUDL Net Ratings - 2022 Season") +
+  theme_bw()
+```
 
-<img src="man/figures/README-pressure-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-4-1.png" width="100%" />
 
-In that case, don’t forget to commit and push the resulting figure
-files, so they display on GitHub and CRAN.
+``` r
+library(ggimage)
+#> Bioconductor version '3.12' is out-of-date; the current release version '3.15'
+#>   is available with R version '4.2'; see https://bioconductor.org/install
+
+ggplot2::ggplot(team_stats, aes(x = scoresFor, y = scoresAgainst)) +
+  geom_image(aes(image = logoURL), asp = 1)
+```
+
+<img src="man/figures/README-unnamed-chunk-5-1.png" width="100%" />

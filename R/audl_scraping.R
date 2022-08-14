@@ -174,6 +174,7 @@ load_audl_player_stats = function(season, stat_type = "game") {
 #' @examples
 #' load_audl_team_stats(2022)
 #' load_audl_team_stats(2022, stat_type = "total", team_type = "opponent")
+#'
 load_audl_team_stats = function(season, stat_type = "game", team_type = "team") {
 
   wins = losses = scoresFor = scoresAgainst = completions = turnovers = blocks = completionPercentage = holdPercentage = huckCompletions = huckPercentage = oLineConversionPercentage = dLineConversionPercentage = breakPercentage = redZoneConversionPercentage = opponentCompletions = opponentTurnovers = opponentBlocks = opponentCompletionPercentage = opponentHoldPercentage = opponentOLineConversionPercentage = opponentBreakPercentage = opponentDLineConversionPercentage = opponentHuckCompletions = opponentHuckPercentage = opponentRedZoneConversionPercentage = holds = breaks = huckTurnovers = opponentHolds = opponentBreaks = opponentHuckTurnovers = NULL

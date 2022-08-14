@@ -74,6 +74,6 @@ ggplot2::ggplot(team_stats, aes(x = netRating, y= reorder(teamName, netRating)))
 library(ggimage)
 
 ggplot2::ggplot(team_stats, aes(x = scoresFor, y = scoresAgainst)) +
-  geom_image(aes(image = logoURL), asp = 1)
+  geom_image(aes(image = logoURL)) 
 ```
 

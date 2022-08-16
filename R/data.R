@@ -78,7 +78,7 @@
 
 #' Glossary containing AUDL team names and logos
 #'
-#' A win probability model fit in base R using logistic regression to the modelW dataset with one feature: Elo difference.
+#' A data frame containing information on each of the AUDL's 25 teams from the 2021-22 season
 #'
 #' @format A data frame with 25 rows and 4 variables:
 #' \describe{

@@ -2,8 +2,6 @@
 ---
 title: "fRisbee: An Open-Source Package for College and Professional Ultimate Frisbee
   Data and Modeling"
-author: "Ben Wieland and Akiva Dienstfrey, University of Virginia"
-date: "`r format(Sys.Date(),format ='%b %d, %Y')`"
 output: github_document
 ---
 
@@ -239,7 +237,5 @@ ggplot2::ggplot(team_stats_plot, aes(x = netRating, y= reorder(teamName, netRati
        caption = "Data from 2022 season | accessed via fRisbee") +
   ggplot2::theme_bw()
 ```
-
-## VI. Bibliography
 
 

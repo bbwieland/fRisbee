@@ -1,8 +1,6 @@
 fRisbee: An Open-Source Package for College and Professional Ultimate
 Frisbee Data and Modeling
 ================
-Ben Wieland and Akiva Dienstfrey, University of Virginia
-Aug 26, 2022
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
@@ -469,5 +467,3 @@ ggplot2::ggplot(team_stats_plot, aes(x = netRating, y= reorder(teamName, netRati
 ```
 
 <img src="man/figures/README-unnamed-chunk-13-1.png" width="100%" />
-
-## VI. Bibliography
